@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { useCursor, MeshPortalMaterial, CameraControls, Gltf, Text, Preload } from '@react-three/drei'
 
 const Rig = ({ position = new THREE.Vector3(0, 0, 2), focus = new THREE.Vector3(0, 0, 0) }) => {
-    const { controls, scene } = useThree();
+    const { controls, scene, camera } = useThree();
     const [, params] = useRoute('/item/:id');
 
     useEffect(() => {
@@ -15,7 +15,7 @@ const Rig = ({ position = new THREE.Vector3(0, 0, 2), focus = new THREE.Vector3(
                 parent.localToWorld(position.set(0, 0.5, 0.25));
                 parent.localToWorld(focus.set(0, 0, -2));
             }
-            controls?.setLookAt(...position.toArray(), ...focus.toArray(), true);
+            camera.lookAt(...position.toArray())    
         }
     });
 

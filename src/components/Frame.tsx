@@ -1,15 +1,23 @@
 import { useCursor, Text, MeshPortalMaterial } from "@react-three/drei"
 import { FC, useRef, useState } from "react"
-import { suspend } from "suspend-react"
+import {   useFrame, } from '@react-three/fiber'
+import { easing } from 'maath'
 import * as THREE from 'three'
+import { useRoute } from "wouter"
 
 export const Frame:FC<any>=({ id, name, author, bg, width = 1, height = 1.61803398875, children, ...props }) => {
     // const regular = import('@pmndrs/assets/fonts/inter_regular.woff')
     // const medium = import('@pmndrs/assets/fonts/inter_medium.woff')
     const portal = useRef<THREE.Mesh>(null)
+    const [, params] = useRoute('/item/:id')
     const [hovered, hover] = useState(false)
     useCursor(hovered)
-
+    useFrame((state, dt) => {
+        if (portal.current) {
+            easing.damp(portal.current, 'blend', params?.id === id ? 1 : 0, 0.2, dt)
+        }
+    })
+ 
     const setLocation = (path: string) => {
         window.location.href = path
     }
